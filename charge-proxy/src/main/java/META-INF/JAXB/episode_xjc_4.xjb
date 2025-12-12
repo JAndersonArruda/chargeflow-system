@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<bindings version="3.0" xmlns="https://jakarta.ee/xml/ns/jaxb">
+  <!--
+
+Este arquivo foi gerado pela Eclipse Implementation of JAXB, v3.0.2 
+Consulte https://eclipse-ee4j.github.io/jaxb-ri 
+Todas as modificações neste arquivo serão perdidas após a recompilação do esquema de origem. 
+Gerado em: 2025.12.12 às 12:38:52 PM BRT 
+
+  -->
+  <bindings scd="x-schema::tns" xmlns:tns="http://dac.com/chargeproxy">
+    <schemaBindings map="false">
+      <package name="com.dac.chargeproxy"/>
+    </schemaBindings>
+    <bindings scd="tns:TestRequest">
+      <class ref="com.dac.chargeproxy.TestRequest"/>
+    </bindings>
+    <bindings scd="tns:TestResponse">
+      <class ref="com.dac.chargeproxy.TestResponse"/>
+    </bindings>
+  </bindings>
+</bindings>
+
