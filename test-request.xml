@@ -1,0 +1,9 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:cha="http://dac.com/chargeproxy">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <cha:TestRequest>
+         <cha:message>Olá SOAP!</cha:message>
+      </cha:TestRequest>
+   </soapenv:Body>
+</soapenv:Envelope>

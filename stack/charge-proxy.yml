@@ -1,0 +1,21 @@
+version: "3.9"
+
+networks:
+  chargeflow-network:
+    external: true
+
+services:
+  charge-proxy:
+    image: 192.168.56.10:5000/charge-proxy:latest
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/chargerdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    ports:
+      - "8080:8080"
+    networks:
+      - chargeflow-network
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure

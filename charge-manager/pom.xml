@@ -72,9 +72,9 @@
                             <goal>wsimport</goal>
                         </goals>
                         <configuration>
-                            <wsdlUrls>
-                                <wsdlUrl>http://localhost:8080/ws/chargeservice.wsdl</wsdlUrl>
-                            </wsdlUrls>
+                            <wsdlFiles>
+                                <wsdlFile>${project.basedir}/src/main/resources/wsdl/chargeservice.wsdl</wsdlFile>
+                            </wsdlFiles>
                             <packageName>com.dac.chargeproxy.wsdl</packageName>
                             <sourceDestDir>${project.build.directory}/generated-sources/jaxws</sourceDestDir>
                             <keep>true</keep>

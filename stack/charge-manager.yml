@@ -1,0 +1,17 @@
+version: "3.9"
+
+networks:
+  chargeflow-network:
+    external: true
+
+services:
+  charge-manager:
+    image: 192.168.56.10:5000/charge-manager:latest
+    ports:
+      - "8081:8081"
+    networks:
+      - chargeflow-network
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
