@@ -16,7 +16,7 @@ public class ChargeProxyEndpoint {
     @ResponsePayload
     public TestResponse test(@RequestPayload TestRequest request) {
         TestResponse response = new TestResponse();
-        response.setResult("Proxy received: " + request.getMessage());
+        response.setResult("Proxy received hot reload: " + request.getMessage());
         return response;
     }
 }

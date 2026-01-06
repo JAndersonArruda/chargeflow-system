@@ -17,7 +17,7 @@ public class TestController {
 
     @GetMapping("/test-route")
     public ResponseEntity<String> testRoute() {
-        String proxyResult = soapClient.test("Hello Manager...");
+        String proxyResult = soapClient.test("Hello Manager hot reload funcionando...");
 
         return ResponseEntity.ok(
                 "Manager OK -> " + proxyResult

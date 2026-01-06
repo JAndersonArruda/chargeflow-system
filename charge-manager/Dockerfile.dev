@@ -1,0 +1,21 @@
+FROM maven:3.9.12-eclipse-temurin-21
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends inotify-tools \
+  && rm -rf /var/lib/apt/lists/*
+
+COPY pom.xml ./
+COPY .mvn .mvn
+COPY mvnw mvnw
+COPY entrypoint-dev.sh /app/entrypoint-dev.sh
+
+RUN chmod +x /app/mvnw /app/entrypoint-dev.sh \
+  && mvn dependency:go-offline -B
+
+ENV SPRING_DEVTOOLS_RESTART_ENABLED=true
+ENV SPRING_DEVTOOLS_LIVERELOAD_ENABLED=true
+
+EXPOSE 8081 5005 35729
+
+CMD ["/app/entrypoint-dev.sh"]

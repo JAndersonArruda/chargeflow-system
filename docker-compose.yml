@@ -1,0 +1,83 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: chargeflow-postgres
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-chargerdb}
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - chargeflow-network
+    restart: unless-stopped
+
+  charge-proxy:
+    build:
+      context: ./charge-proxy
+      dockerfile: Dockerfile.dev
+    container_name: chargeflow-proxy
+    ports:
+      - "${PROXY_PORT:-8080}:8080"
+      - "5006:5006"
+      - "35729:35729"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/${POSTGRES_DB:-chargerdb}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER:-postgres}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - SERVER_PORT=8080
+      - SPRING_DEVTOOLS_RESTART_ENABLED=true
+      - SPRING_DEVTOOLS_LIVERELOAD_ENABLED=true
+    volumes:
+      - ./charge-proxy/src:/app/src
+      - ./charge-proxy/src/main/resources:/app/src/main/resources
+      - ./charge-proxy/pom.xml:/app/pom.xml
+      - ./charge-proxy/.mvn:/app/.mvn
+      - ./charge-proxy/mvnw:/app/mvnw
+    networks:
+      - chargeflow-network
+    # depends_on:
+    #   postgres:
+    #     condition: service_healthy
+    restart: unless-stopped
+  
+  charge-manager:
+    build:
+      context: ./charge-manager
+      dockerfile: Dockerfile.dev
+    container_name: chargeflow-manager-dev
+    ports:
+      - "${MANAGER_PORT:-8081}:8081"
+      - "5005:5005"
+      - "35730:35729"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SERVER_PORT=8081
+      - PROXY_SOAP_URL=http://charge-proxy:8080/ws
+      - SPRING_DEVTOOLS_RESTART_ENABLED=true
+      - SPRING_DEVTOOLS_LIVERELOAD_ENABLED=true
+    volumes:
+      - ./charge-manager/src:/app/src
+      - ./charge-manager/src/main/resources:/app/src/main/resources
+      - ./charge-manager/pom.xml:/app/pom.xml
+      - ./charge-manager/.mvn:/app/.mvn
+      - ./charge-manager/mvnw:/app/mvnw
+    networks:
+      - chargeflow-network
+    # depends_on:
+    #   charge-proxy:
+    #     condition: service_healthy
+    restart: unless-stopped
+
+networks:
+  chargeflow-network:
+    driver: bridge
+    name: chargeflow-network
+
+volumes:
+  postgres_dev_data:
+    name: chargeflow-postgres-dev-data
