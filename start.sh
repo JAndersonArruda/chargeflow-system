@@ -66,7 +66,7 @@ vagrant ssh manager -- "
 echo ""
 echo "📥 4. Baixando WSDL do proxy..."
 WSDL_DIR="../charge-manager/src/main/resources/wsdl"
-WSDL_FILE="$WSDL_DIR/chargeservice.wsdl"
+WSDL_FILE="$WSDL_DIR/charge-proxy.wsdl"
 
 echo "   Diretório atual: $(pwd)"
 echo "   Diretório destino: $WSDL_DIR"

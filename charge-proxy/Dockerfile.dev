@@ -2,11 +2,9 @@ FROM maven:3.9.12-eclipse-temurin-21
 
 WORKDIR /app
 
-# Ferramenta para ver mudanças em arquivos dentro do container
 RUN apt-get update && apt-get install -y --no-install-recommends inotify-tools \
   && rm -rf /var/lib/apt/lists/*
 
-# Copia apenas o mínimo necessário; o código virá via volume
 COPY pom.xml ./
 COPY .mvn .mvn
 COPY mvnw mvnw

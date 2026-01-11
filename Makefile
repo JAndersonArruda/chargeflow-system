@@ -49,6 +49,12 @@ define print_endpoints
 	echo ""
 endef
 
+check-env:
+	$(call check_env)
+
+check-docker:
+	$(call check_docker)
+
 
 help: ## Mostra esta ajuda
 	@echo "$(GREEN)🚀 $(PROJECT_NAME) - Comandos disponíveis:$(NC)"
@@ -61,10 +67,10 @@ up: check-env check-docker ## Inicia ambiente completo
 	@echo "$(GREEN)========================================$(NC)"
 	@echo ""
 	@echo "$(YELLOW)🏗️  Construindo imagens (se necessário)...$(NC)"
-	@docker compose -f $(COMPOSE_FILE) build --quiet
+	@docker compose --env-file $(ENV_FILE) -f $(COMPOSE_FILE) build --quiet
 	@echo ""
 	@echo "$(YELLOW)📦 Subindo serviços...$(NC)"
-	@docker compose -f $(COMPOSE_FILE) up -d
+	@docker compose --env-file $(ENV_FILE) -f $(COMPOSE_FILE) up -d
 	@echo ""
 	@echo "$(YELLOW)⏳ Aguardando serviços iniciarem...$(NC)"
 	@sleep 5

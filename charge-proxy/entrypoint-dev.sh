@@ -12,13 +12,11 @@ echo "Hot reload: Spring DevTools + inotify (Java/resources)"
 echo "Workdir: $(pwd)"
 echo ""
 
-# Garante que o inotifywait exista (instalado no Dockerfile.dev)
 if ! command -v inotifywait >/dev/null 2>&1; then
   echo "ERROR: inotifywait não encontrado no container. Verifique Dockerfile.dev."
   exit 1
 fi
 
-# Função para subir a aplicação
 run_app() {
   echo "[APP] Iniciando Spring Boot (mvn spring-boot:run)..."
   mvn spring-boot:run \
@@ -30,11 +28,9 @@ run_app() {
   echo "[APP] PID = $APP_PID"
 }
 
-# Função para monitorar mudanças e recompilar
 watch_and_compile() {
   echo "[WATCH] Monitorando mudanças em src/main/java e src/main/resources..."
 
-  # Arquivo para controlar o último compile (throttle)
   local last_file="/tmp/last-compile.time"
   echo "0" > "$last_file"
 
@@ -49,7 +45,6 @@ watch_and_compile() {
       local last
       last=$(cat "$last_file" 2>/dev/null || echo "0")
 
-      # Evita recompilar várias vezes seguidas (janela de 2s)
       if [ $((now - last)) -lt 2 ]; then
         continue
       fi
@@ -66,7 +61,6 @@ watch_and_compile() {
   done
 }
 
-# Trap para limpar processos
 cleanup() {
   echo ""
   echo "[SYSTEM] Encerrando..."
@@ -77,12 +71,10 @@ cleanup() {
 
 trap cleanup SIGINT SIGTERM
 
-# Sobe app e watcher
 run_app
 watch_and_compile &
 WATCH_PID=$!
 
-# Espera o processo principal
 wait "$APP_PID"
 
 

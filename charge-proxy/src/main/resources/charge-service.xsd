@@ -1,21 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
            targetNamespace="http://dac.com/chargeproxy"
-           xmlns:tns="http://dac.com/chargeproxy"
+           xmlns="http://dac.com/chargeproxy"
            elementFormDefault="qualified">
 
-    <xs:element name="TestRequest">
+    <xs:element name="CreateChargeRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="message" type="xs:string"/>
+                <xs:element name="chargeId" type="xs:long"/>
+                <xs:element name="value" type="xs:double"/>
+                <xs:element name="type" type="xs:string"/>
+
+                <!-- 🔥 DADOS REAIS DO CLIENTE -->
+                <xs:element name="clientName" type="xs:string"/>
+                <xs:element name="clientEmail" type="xs:string"/>
+                <xs:element name="clientCpfCnpj" type="xs:string"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
 
-    <xs:element name="TestResponse">
+    <xs:element name="CreateChargeResponse">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="result" type="xs:string"/>
+                <xs:element name="asaasId" type="xs:string"/>
+                <xs:element name="status" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="CancelChargeRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="asaasId" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="CancelChargeResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="status" type="xs:string"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>

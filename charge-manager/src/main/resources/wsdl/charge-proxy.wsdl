@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://dac.com/chargeproxy" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://dac.com/chargeproxy" targetNamespace="http://dac.com/chargeproxy">
+  <wsdl:types>
+    <xs:schema xmlns="http://dac.com/chargeproxy" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://dac.com/chargeproxy">
+
+    <xs:element name="CreateChargeRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="chargeId" type="xs:long"/>
+                <xs:element name="value" type="xs:double"/>
+                <xs:element name="type" type="xs:string"/>
+
+                <!-- 🔥 DADOS REAIS DO CLIENTE -->
+                <xs:element name="clientName" type="xs:string"/>
+                <xs:element name="clientEmail" type="xs:string"/>
+                <xs:element name="clientCpfCnpj" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="CreateChargeResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="asaasId" type="xs:string"/>
+                <xs:element name="status" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="CancelChargeRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="asaasId" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="CancelChargeResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="status" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="CreateChargeResponse">
+    <wsdl:part element="tns:CreateChargeResponse" name="CreateChargeResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="CancelChargeRequest">
+    <wsdl:part element="tns:CancelChargeRequest" name="CancelChargeRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="CancelChargeResponse">
+    <wsdl:part element="tns:CancelChargeResponse" name="CancelChargeResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="CreateChargeRequest">
+    <wsdl:part element="tns:CreateChargeRequest" name="CreateChargeRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="ChargeProxyPort">
+    <wsdl:operation name="CreateCharge">
+      <wsdl:input message="tns:CreateChargeRequest" name="CreateChargeRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:CreateChargeResponse" name="CreateChargeResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CancelCharge">
+      <wsdl:input message="tns:CancelChargeRequest" name="CancelChargeRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:CancelChargeResponse" name="CancelChargeResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ChargeProxyPortSoap11" type="tns:ChargeProxyPort">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="CreateCharge">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="CreateChargeRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="CreateChargeResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CancelCharge">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="CancelChargeRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="CancelChargeResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ChargeProxyPortService">
+    <wsdl:port binding="tns:ChargeProxyPortSoap11" name="ChargeProxyPortSoap11">
+      <soap:address location="http://localhost:8080/ws"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
